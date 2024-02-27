@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Card from './components/Card'
 import './App.css'
 import Hand from './components/Hand'
@@ -16,9 +16,116 @@ function App() {
   const [player1Pick, setPlayer1Pick] = useState({})
   const [player2Pick, setPlayer2Pick] = useState({})
   const [battle, setBattle] = useState(false)
-  const [score1, setScore1] = useState({"Mage":0, "Archer": 0, "Knight": 0})
-  const [score2, setScore2] = useState({"Mage":0, "Archer": 0, "Knight": 0})
-    
+  const [score1, setScore1] = useState({ "Mage": 0, "Archer": 0, "Knight": 0 })
+  const [score2, setScore2] = useState({ "Mage": 0, "Archer": 0, "Knight": 0 })
+  const [cards, setCards] = useState([])
+  const [cards2, setCards2] = useState([])
+
+  const types = ["Mage", "Archer", "Knight"]
+  let deck = []
+  let deck2 = []
+  let check = false
+
+  function shuffle(array) {
+    let currentIndex = array.length, randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex > 0) {
+
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+  }
+
+  const createDeck = (deck) => {
+    for (let i = 0; i < 5; i++) {
+      let type = types[Math.floor(Math.random() * types.length)]
+      let val = Math.floor(Math.random() * 6) + 1
+      deck.push({
+        id: i,
+        type: type,
+        value: val,
+        power: true
+      })
+    }
+
+    for (let i = 0; i < 2; i++) {
+      let type = types[Math.floor(Math.random() * types.length)]
+      let val = 7
+      deck.push({
+        id: i + 5,
+        type: type,
+        value: val,
+        power: false
+      })
+    }
+
+    let type = types[Math.floor(Math.random() * types.length)]
+    deck.push({
+      id: 7,
+      type: type,
+      value: 8,
+      power: false
+    })
+
+    for (let i = 0; i < 8; i++) {
+      let type = types[Math.floor(Math.random() * types.length)]
+      let val = Math.floor(Math.random() * 6) + 1
+      deck.push({
+        id: i + 8,
+        type: type,
+        value: val,
+        power: false
+      })
+    }
+
+
+    deck = shuffle(deck)
+    createHand(deck)
+  }
+
+  const createHand = (deck) => {
+    let newCards = [];
+    for (let i = 0; i < 5; i++) {
+      newCards.push(deck.pop());
+    }
+
+    if (!check) {
+      setCards(newCards);
+    } else {
+      setCards2(newCards)
+    }
+    check = true
+  }
+
+
+  const handleCardSelect = (player, id, turn) => {
+
+    if (player == "1") {
+      setPlayer1Pick(cards.filter(card => card.id == id)[0])
+      console.log(cards.filter(card => card.id == id))
+    } else {
+      setPlayer2Pick(cards2.filter(card => card.id == id)[0])
+      console.log(cards2.filter(card => card.id == id))
+    }
+
+    // const updatedCards = cards.filter(card => card.id !== id);
+    // setCards(updatedCards);
+
+  };
+
+  useEffect(() => {
+    createDeck(deck)
+    createDeck(deck2)
+  }, [])
+
 
   const handleBattle = () => {
     setBattle(true)
@@ -64,10 +171,48 @@ function App() {
     setStart(false)
   }
 
+  const checkWin = () => {
+    if (score1["Mage"] > 0 && score1["Archer"] > 0 && score1["Knight"] > 0) {
+      return true;
+    }
+
+    if (score2["Mage"] > 0 && score2["Archer"] > 0 && score2["Knight"] > 0) {
+      return true;
+    }
+
+    for (let category in score1) {
+      if (score1[category] === 3 || score2[category] === 3) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   const handleButtonPress = () => {
 
     // initial enter press
     if (!start) {
+      // check for win here
+      if (checkWin()) {
+        setDir("GAME OVER")
+        setStart(false)
+        setLook(false)
+        setTurn(true)
+        setCards([])
+        setCards2([])
+        setPlayer1Pick({})
+        setPlayer2Pick({})
+        setBattle(false)
+        setScore1({ "Mage": 0, "Archer": 0, "Knight": 0 })
+        setScore2({ "Mage": 0, "Archer": 0, "Knight": 0 })
+        deck = []
+        deck2 = []
+        createDeck(deck)
+        createDeck(deck2)
+        return
+      }
+      
       setStart(true)
       setLook(true)
       setPlayer1Pick({})
@@ -107,14 +252,14 @@ function App() {
 
     <div className='w-screen h-screen flex flex-col items-center bg-[#101010]'>
       <div className='flex justify-evenly w-screen'>
-        <Scoreboard score={score1}/>
+        <Scoreboard score={score1} />
         <h1 className='text-5xl mt-8 text-white font-bold font-[MedievalSharp]'>Mage Archer Knight</h1>
-        <Scoreboard score={score2}/>
+        <Scoreboard score={score2} />
       </div>
       {start ?
-        <Player player="1" turn={turn} look={look} setPlayer1Pick={setPlayer1Pick} />
+        <Player player="1" turn={turn} look={look} setPlayer1Pick={setPlayer1Pick} cards={cards} handleCardSelect={handleCardSelect} />
         :
-        <Player player="1" turn={!turn} look={look} setPlayer1Pick={setPlayer1Pick} />
+        <Player player="1" turn={!turn} look={look} setPlayer1Pick={setPlayer1Pick} cards={cards} handleCardSelect={handleCardSelect} />
       }
 
       <div className='flex justify-center text-2xl mt-10 mb-5 text-white font-[MedievalSharp]'>{dir}</div>
@@ -128,7 +273,7 @@ function App() {
       <Battle player1Pick={player1Pick} player2Pick={player2Pick} battle={battle} />
 
       <div className='flex flex-col h-screen justify-center'>
-        <Player player="2" turn={!turn} look={look} setPlayer2Pick={setPlayer2Pick} />
+        <Player player="2" turn={!turn} look={look} setPlayer2Pick={setPlayer2Pick} cards={cards2} handleCardSelect={handleCardSelect} />
       </div>
     </div>
   )

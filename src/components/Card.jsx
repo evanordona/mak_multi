@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 
 
-const Card = ({ id, type, value, turn, power, look, onSelect }) => {
+const Card = ({player, id, type, value, turn, power, look, onSelect}) => {
 
-    const [selected, setSelected] = useState(false)    
+    const [selected, setSelected] = useState(false)   
     let bgColor = '';
     const glowClass = power && turn && look ? 'glow' : '';
 
 
     const handleClick = () => {
         setSelected(!selected);
-        onSelect(id, turn)
+        onSelect(player, id, turn)
     };
 
     switch (type) {
@@ -31,8 +31,9 @@ const Card = ({ id, type, value, turn, power, look, onSelect }) => {
     }
     
 
+
     return (
-        <div className={`${selected ? 'scale-[115%]' : 'scale-100'} 
+        <div className={`
                         ${bgColor} py-5 mx-2 w-[100px] flex flex-col justify-center items-center rounded-lg 
                         ${glowClass} ${look ? 'hover:scale-[115%]' : ''}`}
             onClick={handleClick}>
