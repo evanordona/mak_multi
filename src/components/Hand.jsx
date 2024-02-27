@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Card from './Card'
 
-const Hand = ({ turn }) => {
+const Hand = ({ player, turn, look, setPlayer1Pick, setPlayer2Pick }) => {
 
     const types = ["Mage", "Archer", "Knight"]
     let deck = []
@@ -80,6 +80,22 @@ const Hand = ({ turn }) => {
         setCards(newCards);
     }
 
+
+    const handleCardSelect = (id, turn) => {
+
+        if (player == "1") {
+            setPlayer1Pick(cards.filter(card => card.id == id)[0])
+            console.log(cards.filter(card => card.id == id))
+        } else {
+            setPlayer2Pick(cards.filter(card => card.id == id)[0])
+            console.log(cards.filter(card => card.id == id))
+        }
+
+        // const updatedCards = cards.filter(card => card.id !== id);
+        // setCards(updatedCards);
+
+    };
+
     useEffect(() => {
         createDeck()
     }, [])
@@ -87,8 +103,17 @@ const Hand = ({ turn }) => {
 
     return (
         <div className='flex w-[600px] h-[125px] justify-evenly'>
-            {cards.map(card => (
-                <Card key={card.id} type={card.type} value={card.value} turn={turn} power={card.power} />
+            {cards.map((card, index) => (
+                <Card
+                    key={`${card.id}-${index}`}
+                    id={card.id}
+                    type={card.type}
+                    value={card.value}
+                    turn={turn}
+                    power={card.power}
+                    look={look}
+                    onSelect={handleCardSelect}
+                />
             ))}
         </div>
     )

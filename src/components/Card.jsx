@@ -1,9 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 
-const Card = ({ type, value, turn, power}) => {
+const Card = ({ id, type, value, turn, power, look, onSelect }) => {
 
+    const [selected, setSelected] = useState(false)    
     let bgColor = '';
+    const glowClass = power && turn && look ? 'glow' : '';
+
+
+    const handleClick = () => {
+        setSelected(!selected);
+        onSelect(id, turn)
+    };
 
     switch (type) {
         case 'Mage':
@@ -15,25 +23,32 @@ const Card = ({ type, value, turn, power}) => {
         case 'Knight':
             bgColor = 'bg-red-300';
             break;
-            
+
     }
 
-    if (!turn) {
+    if (!turn || !look) {
         bgColor = 'bg-gray-300';
     }
-
-    const glowClass = power && turn ? 'glow' : '';
-
+    
 
     return (
-        <div className={`${bgColor} py-5 mx-2 w-[100px] flex flex-col justify-center items-center rounded-lg ${glowClass}`}>
+        <div className={`${selected ? 'scale-[115%]' : 'scale-100'} 
+                        ${bgColor} py-5 mx-2 w-[100px] flex flex-col justify-center items-center rounded-lg 
+                        ${glowClass} ${look ? 'hover:scale-[115%]' : ''}`}
+            onClick={handleClick}>
+
             {
-                turn ?  (<div className='flex flex-col justify-center items-center'>
-                            <div className='text-3xl'>{type}</div>
-                            <div className=' text-purple-500 text-2xl'>{value}</div>
-                        </div>)
-                    : (<></>)
-            }         
+                turn && look ?
+                    (<div className='flex flex-col justify-center items-center h-[125px]'>
+                        <div className='text-3xl font-[MedievalSharp]'>{type}</div>
+                        <div className=' text-purple-500 text-2xl font-[MedievalSharp] font-bold'>{value}</div>
+                    </div>)
+                    :
+                    (<div className='flex flex-col justify-center items-center h-[125px]'>
+                      
+                    </div>)
+            }
+
         </div>
     )
 }
