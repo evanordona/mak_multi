@@ -22,9 +22,8 @@ function App() {
   const [cards2, setCards2] = useState([])
 
   const types = ["Mage", "Archer", "Knight"]
-  let deck = []
-  let deck2 = []
-  let check = false
+  const [deck, setDeck] = useState([])
+  const [deck2, setDeck2] = useState([])
 
   function shuffle(array) {
     let currentIndex = array.length, randomIndex;
@@ -44,69 +43,138 @@ function App() {
     return array;
   }
 
-  const createDeck = (deck) => {
-    for (let i = 0; i < 5; i++) {
-      let type = types[Math.floor(Math.random() * types.length)]
-      let val = Math.floor(Math.random() * 6) + 1
-      deck.push({
-        id: i,
-        type: type,
-        value: val,
-        power: true
-      })
-    }
+  const createDeck1 = () => {
+    setDeck(prevDeck => {
+      let newDeck = [];
 
-    for (let i = 0; i < 2; i++) {
-      let type = types[Math.floor(Math.random() * types.length)]
-      let val = 7
-      deck.push({
-        id: i + 5,
+      for (let i = 0; i < 5; i++) {
+        let type = types[Math.floor(Math.random() * types.length)];
+        let val = Math.floor(Math.random() * 6) + 1;
+        newDeck.push({
+          id: i,
+          type: type,
+          value: val,
+          power: true
+        });
+      }
+
+      for (let i = 0; i < 2; i++) {
+        let type = types[Math.floor(Math.random() * types.length)];
+        let val = 7;
+        newDeck.push({
+          id: i + 5,
+          type: type,
+          value: val,
+          power: false
+        });
+      }
+
+      let type = types[Math.floor(Math.random() * types.length)];
+      newDeck.push({
+        id: 6,
         type: type,
-        value: val,
+        value: 8,
         power: false
-      })
-    }
+      });
 
-    let type = types[Math.floor(Math.random() * types.length)]
-    deck.push({
-      id: 7,
-      type: type,
-      value: 8,
-      power: false
-    })
+      for (let i = 0; i < 8; i++) {
+        let type = types[Math.floor(Math.random() * types.length)];
+        let val = Math.floor(Math.random() * 6) + 1;
+        newDeck.push({
+          id: i + 8,
+          type: type,
+          value: val,
+          power: false
+        });
+      }
 
-    for (let i = 0; i < 8; i++) {
-      let type = types[Math.floor(Math.random() * types.length)]
-      let val = Math.floor(Math.random() * 6) + 1
-      deck.push({
-        id: i + 8,
-        type: type,
-        value: val,
-        power: false
-      })
-    }
+      return shuffle(newDeck);
+    });
 
-
-    deck = shuffle(deck)
-    createHand(deck)
+    createHand(false);
   }
 
-  const createHand = (deck) => {
-    let newCards = [];
-    for (let i = 0; i < 5; i++) {
-      newCards.push(deck.pop());
-    }
+  const createDeck2 = () => {
+    setDeck2(prevDeck => {
+      let newDeck = [];
+
+      for (let i = 0; i < 5; i++) {
+        let type = types[Math.floor(Math.random() * types.length)];
+        let val = Math.floor(Math.random() * 6) + 1;
+        newDeck.push({
+          id: i,
+          type: type,
+          value: val,
+          power: true
+        });
+      }
+
+      for (let i = 0; i < 2; i++) {
+        let type = types[Math.floor(Math.random() * types.length)];
+        let val = 7;
+        newDeck.push({
+          id: i + 5,
+          type: type,
+          value: val,
+          power: false
+        });
+      }
+
+      let type = types[Math.floor(Math.random() * types.length)];
+      newDeck.push({
+        id: 6,
+        type: type,
+        value: 8,
+        power: false
+      });
+
+      for (let i = 0; i < 8; i++) {
+        let type = types[Math.floor(Math.random() * types.length)];
+        let val = Math.floor(Math.random() * 6) + 1;
+        newDeck.push({
+          id: i + 8,
+          type: type,
+          value: val,
+          power: false
+        });
+      }
+
+      return shuffle(newDeck);
+    });
+
+    createHand(true);
+  }
+
+  const createHand = (check) => {
 
     if (!check) {
-      setCards(newCards);
+      setDeck(prevArr => {
+        const newArr = [...prevArr]
+        const newCards = []
+        for (let i = 0; i < 5; i++) {
+          newCards.push(newArr.pop())
+        }
+
+        setCards(newCards)
+        return newArr
+      })
     } else {
-      setCards2(newCards)
+      setDeck2(prevArr => {
+        const newArr = [...prevArr]
+        const newCards = []
+        for (let i = 0; i < 5; i++) {
+          newCards.push(newArr.pop())
+        }
+
+        setCards2(newCards)
+        return newArr
+      })
     }
-    check = true
+
   }
 
 
-  const handleCardSelect = (player, id, turn) => {
+  const handleCardSelect = (player, id) => {
 
     if (player == "1") {
       setPlayer1Pick(cards.filter(card => card.id == id)[0])
@@ -116,14 +184,11 @@ function App() {
       console.log(cards2.filter(card => card.id == id))
     }
 
-    // const updatedCards = cards.filter(card => card.id !== id);
-    // setCards(updatedCards);
-
   };
 
   useEffect(() => {
-    createDeck(deck)
-    createDeck(deck2)
+    createDeck1()
+    createDeck2()
   }, [])
 
 
@@ -167,6 +232,23 @@ function App() {
         setScore2(temp2)
       }
     }
+    console.log(player1Pick.id)
+    setCards(prevArr => {
+      const newArr = prevArr.filter(card => card.id != player1Pick.id);
+      const t1 = [...deck];
+      newArr.push(t1.pop());
+      setDeck(t1);
+      return newArr;
+    })
+
+    setCards2(prevArr => {
+      const newArr = prevArr.filter(card => card.id != player2Pick.id);
+      const t2 = [...deck2];
+      newArr.push(t2.pop());
+      setDeck2(t2);
+      return newArr;
+    })
+
     setLook(false)
     setStart(false)
   }
@@ -206,13 +288,13 @@ function App() {
         setBattle(false)
         setScore1({ "Mage": 0, "Archer": 0, "Knight": 0 })
         setScore2({ "Mage": 0, "Archer": 0, "Knight": 0 })
-        deck = []
-        deck2 = []
-        createDeck(deck)
-        createDeck(deck2)
+        setDeck([])
+        setDeck2([])
+        createDeck1(deck)
+        createDeck2(deck2)
         return
       }
-      
+
       setStart(true)
       setLook(true)
       setPlayer1Pick({})
