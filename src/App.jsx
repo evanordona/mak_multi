@@ -310,9 +310,9 @@ function App() {
       } else {
         if (look == true) {
           if (turn) {
-            setDir("Look away Player 1! Player 2 press enter")
+            setDir("Look away Player 1, Player 2 press enter")
           } else {
-            setDir("Look away Player 2! Player 1 press enter")
+            setDir("Look away Player 2, Player 1 press enter")
           }
           setLook(false)
         } else {
@@ -332,10 +332,12 @@ function App() {
 
   return (
 
-    <div className='w-screen h-screen flex flex-col items-center bg-[#101010]'>
+    <div className='w-screen h-full flex flex-col items-center bg-[#101010]'>
       <div className='flex justify-evenly w-screen'>
         <Scoreboard score={score1} />
-        <h1 className='text-5xl mt-8 text-white font-bold font-[MedievalSharp]'>Mage Archer Knight</h1>
+        <div className='flex m-auto'>
+          <h1 className='text-2xl lg:text-5xl text-white font-bold font-[MedievalSharp]'>Mage Archer Knight</h1>
+        </div>
         <Scoreboard score={score2} />
       </div>
       {start ?
@@ -344,7 +346,7 @@ function App() {
         <Player player="1" turn={!turn} look={look} setPlayer1Pick={setPlayer1Pick} cards={cards} handleCardSelect={handleCardSelect} />
       }
 
-      <div className='flex justify-center text-2xl mt-10 mb-5 text-white font-[MedievalSharp]'>{dir}</div>
+      <div className='flex justify-center text-2xl mt-10 mb-5 w-[250px] lg:w-full text-white font-[MedievalSharp]'>{dir}</div>
 
       <button
         onClick={handleButtonPress}
@@ -354,7 +356,7 @@ function App() {
       </button>
       <Battle player1Pick={player1Pick} player2Pick={player2Pick} battle={battle} />
 
-      <div className='flex flex-col h-screen justify-center'>
+      <div className='lg:mt-12 pb-56'>
         <Player player="2" turn={!turn} look={look} setPlayer2Pick={setPlayer2Pick} cards={cards2} handleCardSelect={handleCardSelect} />
       </div>
     </div>

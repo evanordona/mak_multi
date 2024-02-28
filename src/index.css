@@ -5,3 +5,7 @@
 .glow {
     box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #800080, 0 0 70px #800080, 0 0 80px #800080, 0 0 10px #800080, 0 0 10px #800
 }
+
+.font-outline-2 {
+    -webkit-text-stroke: 1px black;
+  }

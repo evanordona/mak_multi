@@ -57,7 +57,7 @@ const Card = ({ player, id, type, value, turn, power, look, onSelect }) => {
 
     return (
         <div className={`
-                        ${look && turn ? borderType : ''} ${bgColor} py-5 mx-2 w-[100px] flex flex-col justify-center items-center rounded-lg 
+                        ${look && turn ? borderType : ''} ${bgColor} py-5 mx-2 w-[60px] lg:w-[100px] flex flex-col justify-center items-center rounded-lg 
                         ${glowClass} ${look ? 'hover:scale-[115%]' : ''} bg-cover bg-center`}
 
             style={{ backgroundImage: look && turn ? `url(${cardImage})` : `url(${backImage})` }}
@@ -68,8 +68,8 @@ const Card = ({ player, id, type, value, turn, power, look, onSelect }) => {
             {
                 turn && look ?
                     (<div className='flex flex-col justify-center items-center h-[125px]'>
-                        <div className='text-3xl font-[MedievalSharp] text-white'>{type}</div>
-                        <div className=' text-white text-2xl font-[MedievalSharp] font-bold'>{value}</div>
+                        <div className='text-xl lg:text-3xl font-[MedievalSharp] text-white lg:font-outline-2'>{type}</div>
+                        <div className=' text-white text-lg lg:text-2xl font-[MedievalSharp] font-bold'>{value}</div>
                     </div>)
                     :
                     (<div className='flex flex-col justify-center items-center h-[125px]'>
