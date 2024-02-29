@@ -12,7 +12,7 @@ app.use(cors())
 
 const io = new Server(server, {
     cors: {
-        origin: 'http://192.168.1.250:5173',
+        origin: 'http://mak-game.onrender.com/',
         methods: ['GET', 'POST'],
     }
 })
