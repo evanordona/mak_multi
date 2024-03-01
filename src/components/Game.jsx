@@ -298,13 +298,13 @@ const Game = ({ setIsConnected, code }) => {
         <div className='w-screen h-screen pb-[60rem] flex flex-col items-center bg-gradient-to-b from-[#101010] to-[#4b4b4b] '>
             <div className='flex w-screen justify-evenly'>
                 <div className='flex m-auto mt-10'>
-                    <h1 className='text-2xl lg:text-5xl text-white font-bold font-[MedievalSharp]'>Mage Archer Knight</h1>
+                    <h1 className='text-2xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-red-500  via-yellow-200 to-red-500 font-bold font-[MedievalSharp]'>Mage Archer Knight</h1>
                 </div>
             </div>
 
             <div className='flex mt-3'>
-                <Scoreboard score={score1} person={"You"}/>
-                <Scoreboard score={score2} person={"Opponent"}/>
+                <Scoreboard score={score1} person={"You"} />
+                <Scoreboard score={score2} person={"Opponent"} />
             </div>
 
             <Battle player1Pick={player1Pick} player2Pick={player2Pick} battle={battle} />
