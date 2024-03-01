@@ -257,7 +257,7 @@ const Game = ({ setIsConnected, code }) => {
     }
 
     const handleButtonPress = () => {
-      
+
         // send card if you havent already
         if (!send && player1Pick.type) {
 
@@ -295,19 +295,20 @@ const Game = ({ setIsConnected, code }) => {
 
     return (
 
-        <div className='w-screen h-full flex flex-col items-center bg-[#101010]'>
-            <div className='flex justify-evenly w-screen'>
-                <Scoreboard score={score1} />
-                <div className='flex m-auto'>
+        <div className='w-screen h-screen pb-[60rem] flex flex-col items-center bg-[#101010]'>
+            <div className='flex w-screen justify-evenly'>
+                <div className='flex m-auto mt-10'>
                     <h1 className='text-2xl lg:text-5xl text-white font-bold font-[MedievalSharp]'>Mage Archer Knight</h1>
                 </div>
-                <Scoreboard score={score2} />
             </div>
 
-            <Player player="2" look={false} cards={cards2} />
+            <div className='flex mt-3'>
+                <Scoreboard score={score1} person={"You"}/>
+                <Scoreboard score={score2} person={"Opponent"}/>
+            </div>
 
-
-            <div className='flex justify-center text-2xl mt-10 mb-5 w-[250px] lg:w-full text-white font-[MedievalSharp]'>{dir}</div>
+            <Battle player1Pick={player1Pick} player2Pick={player2Pick} battle={battle} />
+            <div className='flex justify-center text-2xl mt-4 mb-5 w-[250px] lg:w-full text-white font-[MedievalSharp]'>{dir}</div>
 
             <button
                 onClick={handleButtonPress}
@@ -315,9 +316,8 @@ const Game = ({ setIsConnected, code }) => {
                   rounded focus:outline-none focus:shadow-outline w-[100px] font-[MedievalSharp]">
                 Enter
             </button>
-            <Battle player1Pick={player1Pick} player2Pick={player2Pick} battle={battle} />
 
-            <div className='lg:mt-12 pb-56'>
+            <div className='lg:mt-12'>
                 <Player player="1" look={true} cards={cards} handleCardSelect={handleCardSelect} />
             </div>
         </div>

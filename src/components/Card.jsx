@@ -46,21 +46,21 @@ const Card = ({ player, id, type, value, look, power, onSelect }) => {
 
     return (
         <div className={`
-                        ${look ? borderType : ''} ${bgColor} py-5 mx-2 w-[60px] lg:w-[100px] flex flex-col justify-center items-center rounded-lg 
+                        ${look ? borderType : ''} ${bgColor} py-5 mx-2 w-[80px] h-[100px] lg:w-[100px] lg:h-[125px] flex flex-col justify-center items-center rounded-lg 
                         ${glowClass} ${look ? 'hover:scale-[115%]' : ''} bg-cover bg-center`}
 
             style={{ backgroundImage: look ? `url(${cardImage})` : `url(${backImage})` }}
             onClick={handleClick}>
 
             {
-                
+
                 look ?
-                    (<div className='flex flex-col justify-center items-center h-[125px]'>
+                    (<div className='flex flex-col items-center justify-center'>
                         <div className='text-xl lg:text-3xl font-[MedievalSharp] text-white lg:font-outline-2'>{type}</div>
                         <div className=' text-white text-lg lg:text-2xl font-[MedievalSharp] font-bold'>{value}</div>
                     </div>)
                     :
-                    (<div className='flex flex-col justify-center items-center h-[125px]'>
+                    (<div className='flex flex-col items-center justify-center'>
 
                     </div>)
             }

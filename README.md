@@ -1,7 +1,5 @@
 # Mage Archer Knight
 
 # TODO:
-- multiplayer
-- server
-- ui
+- better ui / layout
 

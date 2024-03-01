@@ -4,7 +4,7 @@ import Card from './Card'
 const Battle = ({ player1Pick, player2Pick, battle }) => {
 
     return (
-        <div className='mt-6 flex w-[300px] lg:w-[990px] h-[80px] lg:h-[125px] justify-evenly'>
+        <div className='mt-6 flex w-[300px] lg:w-[490px] h-[80px] lg:h-[125px] justify-evenly mb-5'>
         
         {
             player1Pick.type ?
@@ -16,6 +16,7 @@ const Battle = ({ player1Pick, player2Pick, battle }) => {
         {
             player2Pick.type ? 
                 <Card type={player2Pick.type} value={player2Pick.value} look={battle} power={player2Pick.power}/>
+                
             :
                 <></>
         }

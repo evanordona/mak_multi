@@ -4,7 +4,7 @@ import Card from './Card'
 const Hand = ({player, look, cards, handleCardSelect}) => {
 
     return (
-        <div className='flex w-[350px] h-[80px] lg:w-[600px] lg:h-[125px] justify-evenly'>
+        <div className='flex flex-wrap justify-center w-[350px] h-[260px] lg:w-[600px] lg:h-[125px]'>
             {cards.map((card, index) => (
                 <Card
                     key={`${card.id}-${index}`}

@@ -7,11 +7,11 @@ import Game from './components/Game'
 
 function App() {
 
-  const [isConnected, setIsConnected] = useState(false) // joined a room state
+  const [isConnected, setIsConnected] = useState(false) // joined a room state  
   const [code, setCode] = useState("") // room code state
 
   return (
-
+    
     <>
       <Routes>
 

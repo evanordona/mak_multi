@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Scoreboard = ({ score }) => {
+const Scoreboard = ({ score, person }) => {
 
     const typeColors = {
         Mage: 'bg-blue-300',
@@ -10,8 +10,13 @@ const Scoreboard = ({ score }) => {
 
 
     return (
-        <div className='w-[300px] h-[150px] m-auto'>
-            <div className='flex'>
+        <div className='w-[150px] lg:w-[600px] h-[150px]'>
+
+            <div className='flex justify-center text-white'>
+                <h1>{person}</h1>
+            </div>
+
+            <div className='flex justify-center'>
                 {Object.keys(score).map(type => (
                     <div key={type} className='flex flex-col'>
                         {Array.from({ length: score[type] }).map((_, index) => (
