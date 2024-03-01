@@ -295,7 +295,7 @@ const Game = ({ setIsConnected, code }) => {
 
     return (
 
-        <div className='w-screen h-screen pb-[60rem] flex flex-col items-center bg-[#101010]'>
+        <div className='w-screen h-screen pb-[60rem] flex flex-col items-center bg-gradient-to-b from-[#101010] to-[#4b4b4b] '>
             <div className='flex w-screen justify-evenly'>
                 <div className='flex m-auto mt-10'>
                     <h1 className='text-2xl lg:text-5xl text-white font-bold font-[MedievalSharp]'>Mage Archer Knight</h1>

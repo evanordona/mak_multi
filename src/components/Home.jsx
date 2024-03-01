@@ -18,9 +18,9 @@ const Home = ({ setIsConnected, code, setCode }) => {
     }
 
     return (
-        <div className='h-screen f-screen flex flex-col items-center justify-center bg-[#101010]'>
+        <div className='h-screen f-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#101010] to-[#4b4b4b]'>
 
-            <h1 className='text-4xl text-white font-[MedievalSharp] '>
+            <h1 className='text-4xl lg:text-5xl text-white font-[MedievalSharp] bg-clip-text text-transparent bg-gradient-to-r from-red-500  via-yellow-200 to-red-500 font-bold'>
                 Mage Archer Knight
             </h1>
 

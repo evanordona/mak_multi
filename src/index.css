@@ -9,3 +9,14 @@
 .font-outline-2 {
     -webkit-text-stroke: 1px black;
 }
+
+.body-background {
+
+    background-image: 
+        radial-gradient(circle at center, rgba(243, 16, 16, 0.005) 0, rgba(255, 255, 255, 0.005) 1px, transparent 1px),
+        linear-gradient(to right, rgba(160, 37, 37, 0.01) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(94, 70, 230, 0.01) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-attachment: fixed;
+    background-color: #161616;
+}
