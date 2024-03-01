@@ -7,10 +7,7 @@ import socket from '../socket'
 
 const Game = ({ setIsConnected, code }) => {
 
-    const [turn, setTurn] = useState(true)
-    const [look, setLook] = useState(true)
     const [dir, setDir] = useState("Select a card")
-    const [start, setStart] = useState(true)
     const [player1Pick, setPlayer1Pick] = useState({})
     const [player2Pick, setPlayer2Pick] = useState({})
     const [battle, setBattle] = useState(false)
@@ -25,6 +22,7 @@ const Game = ({ setIsConnected, code }) => {
     const [deck2, setDeck2] = useState([])
     const delay = ms => new Promise(res => setTimeout(res, ms));
 
+    // shuffle deck
     function shuffle(array) {
         let currentIndex = array.length, randomIndex;
 
@@ -43,10 +41,12 @@ const Game = ({ setIsConnected, code }) => {
         return array;
     }
 
+    // Creates the main users deck
     const createDeck1 = () => {
-        setDeck(prevDeck => {
+        setDeck(() => {
             let newDeck = [];
 
+            // 5 power cards
             for (let i = 0; i < 5; i++) {
                 let type = types[Math.floor(Math.random() * types.length)];
                 let val = Math.floor(Math.random() * 6) + 1;
@@ -58,6 +58,7 @@ const Game = ({ setIsConnected, code }) => {
                 });
             }
 
+            // 2 level 7 cards
             for (let i = 0; i < 2; i++) {
                 let type = types[Math.floor(Math.random() * types.length)];
                 let val = 7;
@@ -69,6 +70,7 @@ const Game = ({ setIsConnected, code }) => {
                 });
             }
 
+            // 1 level 8 card
             let type = types[Math.floor(Math.random() * types.length)];
             newDeck.push({
                 id: 6,
@@ -77,6 +79,7 @@ const Game = ({ setIsConnected, code }) => {
                 power: false
             });
 
+            // rest of 8 random cards
             for (let i = 0; i < 8; i++) {
                 let type = types[Math.floor(Math.random() * types.length)];
                 let val = Math.floor(Math.random() * 6) + 1;
@@ -94,13 +97,15 @@ const Game = ({ setIsConnected, code }) => {
         createHand(false);
     }
 
+    // Creates fake deck displayed at top of screen
     const createDeck2 = () => {
-        setDeck2(prevDeck => {
+        setDeck2(() => {
             let newDeck = [];
 
+            // 5 dummy cards
             for (let i = 0; i < 5; i++) {
                 let type = types[Math.floor(Math.random() * types.length)];
-                let val = Math.floor(Math.random() * 6) + 1;
+
                 newDeck.push({
                     id: i,
                     type: type,
@@ -115,6 +120,7 @@ const Game = ({ setIsConnected, code }) => {
         createHand(true);
     }
 
+    // Creates the 5 cards user sees
     const createHand = (check) => {
 
         if (!check) {
@@ -143,7 +149,7 @@ const Game = ({ setIsConnected, code }) => {
 
     }
 
-
+    // Shows card in battle once player presses enter
     const handleCardSelect = (player, id) => {
 
         if (player == "1" && !send) {
@@ -159,9 +165,13 @@ const Game = ({ setIsConnected, code }) => {
 
 
     const handleBattle = async () => {
+        // show both battle cards
         setBattle(true)
+
         let temp1 = score1
         let temp2 = score2
+
+        // Determine who wins and update score
         if (player1Pick.type === player2Pick.type) {
             if (player1Pick.power && !player2Pick.power) {
                 setDir("You win with a power card!");
@@ -199,7 +209,7 @@ const Game = ({ setIsConnected, code }) => {
             }
         }
 
-        
+        // Replace card used with new card from deck
         setCards(prevArr => {
             const newArr = prevArr.filter(card => card.id != player1Pick.id);
             const t1 = [...deck];
@@ -207,6 +217,8 @@ const Game = ({ setIsConnected, code }) => {
             setDeck(t1);
             return newArr;
         })
+
+        // Wait 3 seconds
         await delay(3000)
 
 
@@ -221,10 +233,11 @@ const Game = ({ setIsConnected, code }) => {
         setSend(false)
         setPlayer1Pick({})
         setPlayer2Pick({})
-        setBattle(false)        
+        setBattle(false)
 
     }
 
+    // Win conditions
     const checkWin = () => {
         if (score1["Mage"] > 0 && score1["Archer"] > 0 && score1["Knight"] > 0) {
             return true;
@@ -244,24 +257,24 @@ const Game = ({ setIsConnected, code }) => {
     }
 
     const handleButtonPress = () => {
-
-        // initial enter press
-        if (!send) {
+      
+        // send card if you havent already
+        if (!send && player1Pick.type) {
 
             // send card to server
             setDir("Wait for opponent pick")
             setSend(true)
 
             socket.emit("send-card", player1Pick, code)
-            
+
         }
 
     }
 
 
-
-    useEffect(()=> {
-        socket.on("receive-card", (card)=> {
+    // listen for messages from server
+    useEffect(() => {
+        socket.on("receive-card", (card) => {
             setPlayer2Pick(card)
         })
 
@@ -270,10 +283,11 @@ const Game = ({ setIsConnected, code }) => {
             await delay(3000)
             setIsConnected(false)
         })
+
     }, [socket])
 
-    useEffect(()=> {
-        
+    useEffect(() => {
+
         if (player1Pick.type && player2Pick.type && send) {
             handleBattle()
         }
@@ -290,7 +304,7 @@ const Game = ({ setIsConnected, code }) => {
                 <Scoreboard score={score2} />
             </div>
 
-            <Player player="2" cards={cards2} handleCardSelect={handleCardSelect} />
+            <Player player="2" look={false} cards={cards2} />
 
 
             <div className='flex justify-center text-2xl mt-10 mb-5 w-[250px] lg:w-full text-white font-[MedievalSharp]'>{dir}</div>
@@ -304,7 +318,7 @@ const Game = ({ setIsConnected, code }) => {
             <Battle player1Pick={player1Pick} player2Pick={player2Pick} battle={battle} />
 
             <div className='lg:mt-12 pb-56'>
-                <Player player="1" turn={turn} look={look} setPlayer1Pick={setPlayer1Pick} cards={cards} handleCardSelect={handleCardSelect} />
+                <Player player="1" look={true} cards={cards} handleCardSelect={handleCardSelect} />
             </div>
         </div>
     )

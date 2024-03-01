@@ -7,15 +7,21 @@ import Game from './components/Game'
 
 function App() {
 
-  const [isConnected, setIsConnected] = useState(false)
-  const [code, setCode] = useState("")
+  const [isConnected, setIsConnected] = useState(false) // joined a room state
+  const [code, setCode] = useState("") // room code state
 
   return (
 
     <>
       <Routes>
+
         <Route exact path='/' element={!isConnected ? <Home setIsConnected={setIsConnected} code={code} setCode={setCode} /> : <Navigate to='/game' />} />
-        <Route exact path='/game' element={isConnected ? <Game setIsConnected={setIsConnected} code={code} /> : <Navigate to='/' />} />
+
+        <Route exact path='/game'
+          element={isConnected ?
+            <Game setIsConnected={setIsConnected} code={code} /> :
+            <Navigate to='/' />} />
+
       </Routes>
     </>
   )

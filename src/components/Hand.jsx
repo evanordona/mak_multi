@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Card from './Card'
 
-const Hand = ({player, turn, look, cards, handleCardSelect}) => {
+const Hand = ({player, look, cards, handleCardSelect}) => {
 
     return (
         <div className='flex w-[350px] h-[80px] lg:w-[600px] lg:h-[125px] justify-evenly'>
@@ -11,7 +11,6 @@ const Hand = ({player, turn, look, cards, handleCardSelect}) => {
                     id={card.id}
                     type={card.type}
                     value={card.value}
-                    turn={turn}
                     power={card.power}
                     look={look}
                     onSelect={handleCardSelect}

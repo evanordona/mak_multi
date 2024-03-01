@@ -9,7 +9,6 @@ const Scoreboard = ({ score }) => {
     };
 
 
-
     return (
         <div className='w-[300px] h-[150px] m-auto'>
             <div className='flex'>

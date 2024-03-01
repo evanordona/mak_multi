@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import socket from '../socket'
 
-const Join = ({ setIsConnected, code, setCode}) => {
+const Join = ({ setIsConnected, code, setCode }) => {
 
-
+    // Join user to room
     const joinRoom = () => {
         socket.emit("joinRoom", code)
     }
 
-    useEffect(()=> {
-        socket.on('startGame', ()=> {
+    useEffect(() => {
+        socket.on('startGame', () => {
             setIsConnected(true)
-        }) 
+        })
     }, [socket])
 
     return (

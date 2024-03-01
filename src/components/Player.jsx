@@ -1,7 +1,7 @@
 import React from 'react'
 import Hand from './Hand'
 
-const Player = ({ player, turn, look, setPlayer1Pick, setPlayer2Pick, cards, handleCardSelect }) => {
+const Player = ({ player, look, cards, handleCardSelect }) => {
 
     return (
         <div>
@@ -11,10 +11,7 @@ const Player = ({ player, turn, look, setPlayer1Pick, setPlayer2Pick, cards, han
 
             <Hand
                 player={player}
-                turn={turn}
                 look={look}
-                setPlayer1Pick={setPlayer1Pick}
-                setPlayer2Pick={setPlayer2Pick}
                 cards={cards}
                 handleCardSelect={handleCardSelect} />
 
