@@ -308,7 +308,7 @@ const Game = ({ setIsConnected, code }) => {
             </div>
 
             <Battle player1Pick={player1Pick} player2Pick={player2Pick} battle={battle} />
-            <div className='flex justify-center text-2xl mt-4 mb-5 w-[250px] lg:w-full text-white font-[MedievalSharp]'>{dir}</div>
+            <div className='flex justify-center text-2xl mt-4 mb-5 w-[250px] lg:w-full text-white font-[MedievalSharp] '>{dir}</div>
 
             <button
                 onClick={handleButtonPress}

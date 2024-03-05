@@ -8,7 +8,7 @@ const Host = ({ setIsConnected, code, setCode }) => {
     const generateRoomCode = () => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         let code = '';
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 3; i++) {
             code += characters.charAt(Math.floor(Math.random() * characters.length));
         }
         return code;
@@ -34,9 +34,9 @@ const Host = ({ setIsConnected, code, setCode }) => {
     }, [socket])
 
     return (
-        <div className='text-white flex flex-col justify-center items-center mt-10'>
+        <div className='flex flex-col items-center justify-center mt-10 text-white'>
             <h1 className='text-2xl font-[MedievalSharp]'>Room Code: </h1>
-            <h1 className='text-5xl mt-5 text-red-300'>{code}</h1>
+            <h1 className='mt-5 text-5xl text-red-300'>{code}</h1>
         </div>
     )
 }
