@@ -7,9 +7,9 @@ import Game from './components/Game'
 
 function App() {
 
-  const [isConnected, setIsConnected] = useState(true) // joined a room state  
+  const [isConnected, setIsConnected] = useState(false) // joined a room state  
   const [code, setCode] = useState("") // room code state
-  const [showKey, setShowKey] = useState(true)
+  const [showKey, setShowKey] = useState(false)
 
 
   return (
