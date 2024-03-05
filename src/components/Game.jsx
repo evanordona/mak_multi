@@ -4,8 +4,10 @@ import Player from './Player'
 import Battle from './Battle'
 import Scoreboard from './Scoreboard'
 import socket from '../socket'
+import Key from './Key'
+import ExampleWin from './ExampleWin'
 
-const Game = ({ setIsConnected, code }) => {
+const Game = ({ setIsConnected, code, showKey }) => {
 
     const [dir, setDir] = useState("Select a card")
     const [player1Pick, setPlayer1Pick] = useState({})
@@ -296,24 +298,32 @@ const Game = ({ setIsConnected, code }) => {
     return (
 
         <div className='w-screen h-screen pb-[60rem] flex flex-col items-center bg-gradient-to-b from-[#101010] to-[#4b4b4b] '>
+            {
+                showKey ? <div>
+                    <div className='absolute left-0'><Key /></div>
+                    <div className='absolute right-0'><ExampleWin /></div>
+                </div>
+                    : <div></div>
+            }
+
             <div className='flex w-screen justify-evenly'>
                 <div className='flex m-auto mt-10'>
-                    <h1 className='text-2xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-red-500  via-yellow-200 to-red-500 font-bold font-[MedievalSharp]'>Mage Archer Knight</h1>
+                    <h1 className='text-2xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-red-500  via-yellow-200 to-red-500 font-bold font-[MedievalSharp]'>Lords Duel</h1>
                 </div>
             </div>
 
-            <div className='flex mt-3'>
+            <div className='flex mt-7'>
                 <Scoreboard score={score1} person={"You"} />
                 <Scoreboard score={score2} person={"Opponent"} />
             </div>
 
             <Battle player1Pick={player1Pick} player2Pick={player2Pick} battle={battle} />
-            <div className='flex justify-center text-2xl mt-4 mb-5 w-[250px] lg:w-full text-white font-[MedievalSharp] '>{dir}</div>
+            <div className='flex justify-center text-xl mt-4 mb-5 w-[250px] lg:w-full text-white font-[MedievalSharp] '>{dir}</div>
 
             <button
                 onClick={handleButtonPress}
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 
-                  rounded focus:outline-none focus:shadow-outline w-[100px] font-[MedievalSharp]">
+                  rounded focus:outline-none focus:shadow-outline w-[80px] font-[MedievalSharp]">
                 Enter
             </button>
 

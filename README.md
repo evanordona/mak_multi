@@ -1,5 +1,5 @@
 # Mage Archer Knight
 
 # TODO:
-- better ui / layout
-
+- simple animation
+- leave lobby or play again after game
