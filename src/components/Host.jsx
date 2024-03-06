@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import socket from '../socket'
 
-const Host = ({ setIsConnected, code, setCode }) => {
+const Host = ({ setIsConnected, code, setCode, setShowGame}) => {
 
 
 
@@ -30,6 +30,7 @@ const Host = ({ setIsConnected, code, setCode }) => {
     useEffect(() => {
         socket.on('startGame', () => {
             setIsConnected(true)
+            setShowGame(true)
         })
     }, [socket])
 

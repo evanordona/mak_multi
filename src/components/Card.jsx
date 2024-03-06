@@ -47,7 +47,7 @@ const Card = ({ player, id, type, value, look, power, onSelect }) => {
     return (
         <div className={`
                         ${look ? borderType : ''} ${bgColor} py-5 mx-2 w-[80px] h-[100px] lg:w-[100px] lg:h-[125px] flex flex-col justify-center items-center rounded-lg 
-                        ${glowClass} ${look ? 'hover:scale-[115%]' : ''} bg-cover bg-center`}
+                        ${glowClass} ${look ? 'hover:scale-[115%]' : ''} bg-cover bg-center transition-transform ease-in-out` }
 
             style={{ backgroundImage: look ? `url(${cardImage})` : `url(${backImage})` }}
             onClick={handleClick}>

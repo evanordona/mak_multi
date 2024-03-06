@@ -4,7 +4,7 @@ import Join from './Join'
 import Key from './Key'
 import ExampleWin from './ExampleWin'
 
-const Home = ({ setIsConnected, code, setCode, showKey, setShowKey }) => {
+const Home = ({setShowGame, setIsConnected, code, setCode, showKey, setShowKey }) => {
 
     const [host, setHost] = useState(false)
     const [join, setJoin] = useState(false)
@@ -74,7 +74,7 @@ const Home = ({ setIsConnected, code, setCode, showKey, setShowKey }) => {
                     ) : (
                         <div>
                             {
-                                host ? <Host setIsConnected={setIsConnected} setCode={setCode} code={code} /> : <Join setIsConnected={setIsConnected} setCode={setCode} code={code} />
+                                host ? <Host setShowGame={setShowGame} setIsConnected={setIsConnected} setCode={setCode} code={code} /> : <Join setShowGame={setShowGame} setIsConnected={setIsConnected} setCode={setCode} code={code} />
                             }
                         </div>
                     )

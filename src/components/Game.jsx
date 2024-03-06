@@ -6,8 +6,9 @@ import Scoreboard from './Scoreboard'
 import socket from '../socket'
 import Key from './Key'
 import ExampleWin from './ExampleWin'
+import Lobby from './Lobby'
 
-const Game = ({ setIsConnected, code, showKey }) => {
+const Game = ({ setIsConnected, code, showKey, showGame, setShowGame, setCode }) => {
 
     const [dir, setDir] = useState("Select a card")
     const [player1Pick, setPlayer1Pick] = useState({})
@@ -226,8 +227,20 @@ const Game = ({ setIsConnected, code, showKey }) => {
 
         if (checkWin()) {
             setDir("GAME OVER!")
+
+            socket.emit('gameOver', code)
             await delay(3000)
-            setIsConnected(false)
+
+            setSend(false)
+            setPlayer1Pick({})
+            setPlayer2Pick({})
+            createDeck1()
+            createDeck2()
+            setBattle(false)
+            setShowGame(false)
+            setDir("Select a card")
+            setScore1({ "Mage": 0, "Archer": 0, "Knight": 0 })
+            setScore2({ "Mage": 0, "Archer": 0, "Knight": 0 })
         } else {
             setDir("Select a card")
         }
@@ -312,25 +325,34 @@ const Game = ({ setIsConnected, code, showKey }) => {
                 </div>
             </div>
 
-            <div className='flex mt-7'>
-                <Scoreboard score={score1} person={"You"} />
-                <Scoreboard score={score2} person={"Opponent"} />
-            </div>
+            {!showGame ? <div className='mt-[10rem]'> <Lobby code={code} setCode={setCode} setIsConnected={setIsConnected} setShowGame={setShowGame} /> </div> :
 
-            <Battle player1Pick={player1Pick} player2Pick={player2Pick} battle={battle} />
-            <div className='flex justify-center text-xl mt-4 mb-5 w-[250px] lg:w-full text-white font-[MedievalSharp] '>{dir}</div>
+                <div className='flex flex-col items-center justify-center'>
 
-            <button
-                onClick={handleButtonPress}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 
-                  rounded focus:outline-none focus:shadow-outline w-[80px] font-[MedievalSharp]">
-                Enter
-            </button>
+                    <div className='flex mt-7'>
+                        <Scoreboard score={score1} person={"You"} />
+                        <Scoreboard score={score2} person={"Opponent"} />
+                    </div>
 
-            <div className='lg:mt-12'>
-                <Player player="1" look={true} cards={cards} handleCardSelect={handleCardSelect} />
-            </div>
+                    <Battle player1Pick={player1Pick} player2Pick={player2Pick} battle={battle} />
+                    <div className='flex justify-center text-xl mt-4 mb-5 lg:w-full text-white font-[MedievalSharp] '>{dir}</div>
+
+                    <button
+                        onClick={handleButtonPress}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 
+                                rounded focus:outline-none focus:shadow-outline w-[80px] font-[MedievalSharp]">
+                        Enter
+                    </button>
+
+                    <div className='lg:mt-12'>
+                        <Player player="1" look={true} cards={cards} handleCardSelect={handleCardSelect} />
+                    </div>
+                </div>
+
+            }
+
         </div>
+
     )
 }
 
