@@ -270,7 +270,7 @@ const Game = ({ setIsConnected, code, showKey, showGame, setShowGame, setCode })
         }
 
         for (let category in score1) {
-            if (score1[category] === 3 || score2[category] === 3) {
+            if (score1[category] === 3) {
                 temp["You"] += 1
                 setSeries(temp)
                 return true;
