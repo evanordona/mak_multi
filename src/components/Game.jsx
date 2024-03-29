@@ -19,6 +19,7 @@ const Game = ({ setIsConnected, code, showKey, showGame, setShowGame, setCode })
     const [cards, setCards] = useState([])
     const [cards2, setCards2] = useState([])
     const [send, setSend] = useState(false)
+    const [series, setSeries] = useState({"You": 0, "Opponent": 0})
 
     const types = ["Mage", "Archer", "Knight"]
     const [deck, setDeck] = useState([])
@@ -254,18 +255,33 @@ const Game = ({ setIsConnected, code, showKey, showGame, setShowGame, setCode })
 
     // Win conditions
     const checkWin = () => {
+        let temp = series
+        
         if (score1["Mage"] > 0 && score1["Archer"] > 0 && score1["Knight"] > 0) {
+            temp["You"] += 1
+            setSeries(temp)    
             return true;
         }
 
         if (score2["Mage"] > 0 && score2["Archer"] > 0 && score2["Knight"] > 0) {
+            temp["Opponent"] += 1
+            setSeries(temp)
             return true;
         }
 
         for (let category in score1) {
             if (score1[category] === 3 || score2[category] === 3) {
+                temp["You"] += 1
+                setSeries(temp)
                 return true;
             }
+            
+            if (score2[category] === 3) {
+                temp["Opponent"] += 1
+                setSeries(temp)
+                return true;
+            }
+            
         }
 
         return false;
@@ -325,7 +341,7 @@ const Game = ({ setIsConnected, code, showKey, showGame, setShowGame, setCode })
                 </div>
             </div>
 
-            {!showGame ? <div className='mt-[10rem]'> <Lobby code={code} setCode={setCode} setIsConnected={setIsConnected} setShowGame={setShowGame} /> </div> :
+            {!showGame ? <div className='mt-[10rem]'> <Lobby series={series} setSeries={setSeries} code={code} setCode={setCode} setIsConnected={setIsConnected} setShowGame={setShowGame} /> </div> :
 
                 <div className='flex flex-col items-center justify-center'>
 

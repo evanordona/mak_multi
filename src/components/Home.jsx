@@ -4,7 +4,7 @@ import Join from './Join'
 import Key from './Key'
 import ExampleWin from './ExampleWin'
 
-const Home = ({setShowGame, setIsConnected, code, setCode, showKey, setShowKey }) => {
+const Home = ({ setShowGame, setIsConnected, code, setCode, showKey, setShowKey }) => {
 
     const [host, setHost] = useState(false)
     const [join, setJoin] = useState(false)
@@ -63,7 +63,7 @@ const Home = ({setShowGame, setIsConnected, code, setCode, showKey, setShowKey }
                             </div>
 
                             <div>
-                                <button onClick={handleClick} className='mt-10 px-4 py-2 font-bold text-white bg-green-500 hover:bg-green-700 rounded 
+                                <button onClick={handleClick} className='mt-10 px-2 py-2 font-bold text-white bg-green-500 hover:bg-green-700 rounded 
                             focus:outline-none focus:shadow-outline w-[100px] font-[MedievalSharp] text-[14px]'>
                                     {showKey ? "Hide Key" : "Show Key"}
                                 </button>

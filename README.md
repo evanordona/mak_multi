@@ -17,3 +17,4 @@ This game is similar to Club Penguins card-jitsu!
 
 # TODO:
 - simple animation
+- refactor and clean code
