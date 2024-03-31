@@ -77,7 +77,7 @@ const Game = ({ setIsConnected, code, showKey, showGame, setShowGame, setCode })
             // 1 level 8 card
             let type = types[Math.floor(Math.random() * types.length)];
             newDeck.push({
-                id: 6,
+                id: 7,
                 type: type,
                 value: 8,
                 power: false
