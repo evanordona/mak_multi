@@ -7,8 +7,9 @@ import socket from '../socket'
 import Key from './Key'
 import ExampleWin from './ExampleWin'
 import Lobby from './Lobby'
+import { useNavigate } from 'react-router-dom'
 
-const Game = ({ setIsConnected, code, showKey, showGame, setShowGame, setCode }) => {
+const Game = ({ isConnected, setIsConnected, code, showKey, showGame, setShowGame, setCode }) => {
 
     const [dir, setDir] = useState("Select a card")
     const [player1Pick, setPlayer1Pick] = useState({})
@@ -19,12 +20,20 @@ const Game = ({ setIsConnected, code, showKey, showGame, setShowGame, setCode })
     const [cards, setCards] = useState([])
     const [cards2, setCards2] = useState([])
     const [send, setSend] = useState(false)
-    const [series, setSeries] = useState({"You": 0, "Opponent": 0})
+    const [series, setSeries] = useState({ "You": 0, "Opponent": 0 })
 
     const types = ["Mage", "Archer", "Knight"]
     const [deck, setDeck] = useState([])
     const [deck2, setDeck2] = useState([])
     const delay = ms => new Promise(res => setTimeout(res, ms));
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!isConnected) {
+            navigate('/')
+        }
+    }, [isConnected, navigate])
 
     // shuffle deck
     function shuffle(array) {
@@ -256,10 +265,10 @@ const Game = ({ setIsConnected, code, showKey, showGame, setShowGame, setCode })
     // Win conditions
     const checkWin = () => {
         let temp = series
-        
+
         if (score1["Mage"] > 0 && score1["Archer"] > 0 && score1["Knight"] > 0) {
             temp["You"] += 1
-            setSeries(temp)    
+            setSeries(temp)
             return true;
         }
 
@@ -275,13 +284,13 @@ const Game = ({ setIsConnected, code, showKey, showGame, setShowGame, setCode })
                 setSeries(temp)
                 return true;
             }
-            
+
             if (score2[category] === 3) {
                 temp["Opponent"] += 1
                 setSeries(temp)
                 return true;
             }
-            
+
         }
 
         return false;

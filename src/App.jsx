@@ -22,7 +22,7 @@ function App() {
 
         <Route exact path='/game'
           element={isConnected ?
-            <Game setIsConnected={setIsConnected} setCode={setCode} code={code} showKey={showKey} showGame={showGame} setShowGame={setShowGame} /> :
+            <Game isConnected={isConnected} setIsConnected={setIsConnected} setCode={setCode} code={code} showKey={showKey} showGame={showGame} setShowGame={setShowGame} /> :
             <Navigate to='/' />} />
 
       </Routes>

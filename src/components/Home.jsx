@@ -74,7 +74,7 @@ const Home = ({ setShowGame, setIsConnected, code, setCode, showKey, setShowKey 
                     ) : (
                         <div>
                             {
-                                host ? <Host setShowGame={setShowGame} setIsConnected={setIsConnected} setCode={setCode} code={code} /> : <Join setShowGame={setShowGame} setIsConnected={setIsConnected} setCode={setCode} code={code} />
+                                host ? <Host setShowGame={setShowGame} setIsConnected={setIsConnected} setCode={setCode} code={code} setHost={setHost} /> : <Join setShowGame={setShowGame} setIsConnected={setIsConnected} setCode={setCode} code={code} setJoin={setJoin} />
                             }
                         </div>
                     )
