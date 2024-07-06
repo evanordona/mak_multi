@@ -16,5 +16,6 @@ This game is similar to Club Penguins card-jitsu!
 - Socket.io
 
 # TODO:
+- get rid of game route so everything is rendered on home route
 - simple animation
 - refactor and clean code

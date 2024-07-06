@@ -14,6 +14,11 @@ const Host = ({ setIsConnected, code, setCode, setShowGame, setHost}) => {
         return code;
     }
 
+    const goBack = () => {
+        setCode('')
+        setHost(false)
+    }
+
 
     useEffect(() => {
         setCode(generateRoomCode());
@@ -39,7 +44,7 @@ const Host = ({ setIsConnected, code, setCode, setShowGame, setHost}) => {
             <h1 className='text-2xl font-[MedievalSharp]'>Room Code: </h1>
             <h1 className='mt-5 text-5xl text-red-300'>{code}</h1>
             
-            <button onClick={() => setHost(false)} className='mt-10 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 
+            <button onClick={goBack} className='mt-10 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 
                              rounded focus:outline-none focus:shadow-outline w-[100px] font-[MedievalSharp]'>Back</button>
         </div>
     )

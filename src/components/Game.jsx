@@ -29,11 +29,24 @@ const Game = ({ isConnected, setIsConnected, code, showKey, showGame, setShowGam
 
     const navigate = useNavigate()
 
+
+    const [textColor, setTextColor] = useState('red')
+
     useEffect(() => {
         if (!isConnected) {
-            navigate('/')
+          navigate('/');
         }
-    }, [isConnected, navigate])
+    
+        socket.on('disconnect', () => {
+          setIsConnected(false);
+          navigate('/');
+        });
+    
+        // Clean up the event listener when the component unmounts
+        return () => {
+          socket.off('disconnect');
+        };
+      }, [isConnected, navigate, setIsConnected]);
 
     // shuffle deck
     function shuffle(array) {
@@ -188,22 +201,28 @@ const Game = ({ isConnected, setIsConnected, code, showKey, showGame, setShowGam
         if (player1Pick.type === player2Pick.type) {
             if (player1Pick.power && !player2Pick.power) {
                 setDir("You win with a power card!");
+                setTextColor('green')
                 temp1[player1Pick.type] += 1
                 setScore1(temp1)
             } else if (!player1Pick.power && player2Pick.power) {
+                
                 setDir("You lose to a power card!");
+                setTextColor('red')
                 temp2[player2Pick.type] += 1
                 setScore2(temp2)
             } else if (player1Pick.value > player2Pick.value) {
                 setDir("You win with higher value!");
+                setTextColor('green')
                 temp1[player1Pick.type] += 1
                 setScore1(temp1)
             } else if (player1Pick.value < player2Pick.value) {
                 setDir("You lose due to having a lower value!");
+                setTextColor('red')
                 temp2[player2Pick.type] += 1
                 setScore2(temp2)
             } else {
                 setDir("It's a tie!");
+                setTextColor('blue')
             }
         } else {
 
@@ -213,10 +232,12 @@ const Game = ({ isConnected, setIsConnected, code, showKey, showGame, setShowGam
                 (player1Pick.type === 'Knight' && player2Pick.type === 'Archer')
             ) {
                 setDir(`You win! ${player1Pick.type} beats ${player2Pick.type}`);
+                setTextColor('green')
                 temp1[player1Pick.type] += 1
                 setScore1(temp1)
             } else {
                 setDir(`You lose! ${player2Pick.type} beats ${player1Pick.type}`);
+                setTextColor('red')
                 temp2[player2Pick.type] += 1
                 setScore2(temp2)
             }
@@ -249,10 +270,12 @@ const Game = ({ isConnected, setIsConnected, code, showKey, showGame, setShowGam
             setBattle(false)
             setShowGame(false)
             setDir("Select a card")
+            setTextColor("red")
             setScore1({ "Mage": 0, "Archer": 0, "Knight": 0 })
             setScore2({ "Mage": 0, "Archer": 0, "Knight": 0 })
         } else {
             setDir("Select a card")
+            setTextColor('red')
         }
 
         setSend(false)
@@ -303,6 +326,7 @@ const Game = ({ isConnected, setIsConnected, code, showKey, showGame, setShowGam
 
             // send card to server
             setDir("Wait for opponent pick")
+            setTextColor('green')
             setSend(true)
 
             socket.emit("send-card", player1Pick, code)
@@ -335,6 +359,8 @@ const Game = ({ isConnected, setIsConnected, code, showKey, showGame, setShowGam
 
     return (
 
+
+
         <div className='w-screen h-screen pb-[60rem] flex flex-col items-center bg-gradient-to-b from-[#101010] to-[#4b4b4b] '>
             {
                 showKey ? <div>
@@ -360,7 +386,12 @@ const Game = ({ isConnected, setIsConnected, code, showKey, showGame, setShowGam
                     </div>
 
                     <Battle player1Pick={player1Pick} player2Pick={player2Pick} battle={battle} />
-                    <div className='flex justify-center text-xl mt-4 mb-5 lg:w-full text-white font-[MedievalSharp] '>{dir}</div>
+                    <div
+                        className='flex justify-center text-xl mt-4 mb-5 lg:w-full font-[MedievalSharp]'
+                        style={{ color: textColor }}
+                    >
+                        {dir}
+                    </div>
 
                     <button
                         onClick={handleButtonPress}

@@ -8,6 +8,11 @@ const Join = ({ setIsConnected, code, setCode, setShowGame, setJoin }) => {
         socket.emit("joinRoom", code)
     }
 
+    const goBack = () => {
+        setCode('')
+        setJoin(false)
+    }
+
     useEffect(() => {
         socket.on('startGame', () => {
             setIsConnected(true)
@@ -23,7 +28,7 @@ const Join = ({ setIsConnected, code, setCode, setShowGame, setJoin }) => {
             <button onClick={joinRoom} className='mt-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 
                              rounded focus:outline-none focus:shadow-outline w-[100px] font-[MedievalSharp]'>Enter</button>
 
-            <button onClick={() => setJoin(false)} className='mt-10 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 
+            <button onClick={goBack} className='mt-10 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 
                              rounded focus:outline-none focus:shadow-outline w-[100px] font-[MedievalSharp]'>Back</button>
         </div>
     )
