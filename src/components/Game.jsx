@@ -22,6 +22,8 @@ const Game = ({ isConnected, setIsConnected, code, showKey, showGame, setShowGam
     const [send, setSend] = useState(false)
     const [series, setSeries] = useState({ "You": 0, "Opponent": 0 })
 
+    const [battleWinner, setBattleWinner] = useState(null);
+
     const types = ["Mage", "Archer", "Knight"]
     const [deck, setDeck] = useState([])
     const [deck2, setDeck2] = useState([])
@@ -34,19 +36,19 @@ const Game = ({ isConnected, setIsConnected, code, showKey, showGame, setShowGam
 
     useEffect(() => {
         if (!isConnected) {
-          navigate('/');
+            navigate('/');
         }
-    
+
         socket.on('disconnect', () => {
-          setIsConnected(false);
-          navigate('/');
+            setIsConnected(false);
+            navigate('/');
         });
-    
+
         // Clean up the event listener when the component unmounts
         return () => {
-          socket.off('disconnect');
+            socket.off('disconnect');
         };
-      }, [isConnected, navigate, setIsConnected]);
+    }, [isConnected, navigate, setIsConnected]);
 
     // shuffle deck
     function shuffle(array) {
@@ -197,51 +199,56 @@ const Game = ({ isConnected, setIsConnected, code, showKey, showGame, setShowGam
         let temp1 = score1
         let temp2 = score2
 
+        let winner = null;
+
         // Determine who wins and update score
         if (player1Pick.type === player2Pick.type) {
             if (player1Pick.power && !player2Pick.power) {
                 setDir("You win with a power card!");
-                setTextColor('green')
-                temp1[player1Pick.type] += 1
-                setScore1(temp1)
+                setTextColor('green');
+                temp1[player1Pick.type] += 1;
+                winner = 'player1';
             } else if (!player1Pick.power && player2Pick.power) {
-                
                 setDir("You lose to a power card!");
-                setTextColor('red')
-                temp2[player2Pick.type] += 1
-                setScore2(temp2)
+                setTextColor('red');
+                temp2[player2Pick.type] += 1;
+                winner = 'player2';
             } else if (player1Pick.value > player2Pick.value) {
                 setDir("You win with higher value!");
-                setTextColor('green')
-                temp1[player1Pick.type] += 1
-                setScore1(temp1)
+                setTextColor('green');
+                temp1[player1Pick.type] += 1;
+                winner = 'player1';
             } else if (player1Pick.value < player2Pick.value) {
                 setDir("You lose due to having a lower value!");
-                setTextColor('red')
-                temp2[player2Pick.type] += 1
-                setScore2(temp2)
+                setTextColor('red');
+                temp2[player2Pick.type] += 1;
+                winner = 'player2';
             } else {
                 setDir("It's a tie!");
-                setTextColor('blue')
+                setTextColor('blue');
+                winner = 'tie';
             }
         } else {
-
             if (
                 (player1Pick.type === 'Mage' && player2Pick.type === 'Knight') ||
                 (player1Pick.type === 'Archer' && player2Pick.type === 'Mage') ||
                 (player1Pick.type === 'Knight' && player2Pick.type === 'Archer')
             ) {
                 setDir(`You win! ${player1Pick.type} beats ${player2Pick.type}`);
-                setTextColor('green')
-                temp1[player1Pick.type] += 1
-                setScore1(temp1)
+                setTextColor('green');
+                temp1[player1Pick.type] += 1;
+                winner = 'player1';
             } else {
                 setDir(`You lose! ${player2Pick.type} beats ${player1Pick.type}`);
-                setTextColor('red')
-                temp2[player2Pick.type] += 1
-                setScore2(temp2)
+                setTextColor('red');
+                temp2[player2Pick.type] += 1;
+                winner = 'player2';
             }
         }
+
+        setScore1(temp1);
+        setScore2(temp2);
+        setBattleWinner(winner);
 
         // Replace card used with new card from deck
         setCards(prevArr => {
@@ -253,7 +260,7 @@ const Game = ({ isConnected, setIsConnected, code, showKey, showGame, setShowGam
         })
 
         // Wait 3 seconds
-        await delay(3000)
+        await delay(5000)
 
 
         if (checkWin()) {
@@ -358,57 +365,90 @@ const Game = ({ isConnected, setIsConnected, code, showKey, showGame, setShowGam
     }, [player1Pick, player2Pick, send])
 
     return (
+        <div className="relative w-screen h-screen overflow-hidden">
+            {/* Main gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#2a0845] via-[#6441A5] to-[#2a0845]"></div>
 
-
-
-        <div className='w-screen h-screen pb-[60rem] flex flex-col items-center bg-gradient-to-b from-[#101010] to-[#4b4b4b] '>
-            {
-                showKey ? <div>
-                    <div className='absolute left-0'><Key /></div>
-                    <div className='absolute right-0'><ExampleWin /></div>
-                </div>
-                    : <div></div>
-            }
-
-            <div className='flex w-screen justify-evenly'>
-                <div className='flex m-auto mt-10'>
-                    <h1 className='text-2xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-red-500  via-yellow-200 to-red-500 font-bold font-[MedievalSharp]'>Lords Duel</h1>
-                </div>
+            {/* Static star effect */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="stars"></div>
             </div>
 
-            {!showGame ? <div className='mt-[10rem]'> <Lobby series={series} setSeries={setSeries} code={code} setCode={setCode} setIsConnected={setIsConnected} setShowGame={setShowGame} /> </div> :
+            {/* Vignette effect */}
+            <div className="absolute inset-0 bg-black opacity-50 bg-gradient-radial from-transparent via-transparent to-black"></div>
 
-                <div className='flex flex-col items-center justify-center'>
-
-                    <div className='flex mt-7'>
-                        <Scoreboard score={score1} person={"You"} />
-                        <Scoreboard score={score2} person={"Opponent"} />
+            {/* Game content */}
+            <div className="relative z-10 w-full h-full pb-[60rem] flex flex-col items-center">
+                {showKey ? (
+                    <div>
+                        <div className='absolute left-0'><Key /></div>
+                        <div className='absolute right-0'><ExampleWin /></div>
                     </div>
+                ) : <div></div>}
 
-                    <Battle player1Pick={player1Pick} player2Pick={player2Pick} battle={battle} />
-                    <div
-                        className='flex justify-center text-xl mt-4 mb-5 lg:w-full font-[MedievalSharp]'
-                        style={{ color: textColor }}
-                    >
-                        {dir}
-                    </div>
-
-                    <button
-                        onClick={handleButtonPress}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 
-                                rounded focus:outline-none focus:shadow-outline w-[80px] font-[MedievalSharp]">
-                        Enter
-                    </button>
-
-                    <div className='lg:mt-12'>
-                        <Player player="1" look={true} cards={cards} handleCardSelect={handleCardSelect} />
+                <div className='flex w-screen justify-evenly'>
+                    <div className='flex m-auto mt-10'>
+                        <h1 className='text-2xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-red-500 via-yellow-200 to-red-500 font-bold font-[MedievalSharp]'>Lords Duel</h1>
                     </div>
                 </div>
 
-            }
+                {!showGame ? (
+                    <div className='mt-[10rem]'>
+                        <Lobby
+                            series={series}
+                            setSeries={setSeries}
+                            code={code}
+                            setCode={setCode}
+                            setIsConnected={setIsConnected}
+                            setShowGame={setShowGame}
+                        />
+                    </div>
+                ) : (
+                    <div className='flex flex-col items-center justify-center'>
+                        <div className='flex mt-7'>
+                            <Scoreboard score={score1} person={"You"} />
+                            <Scoreboard score={score2} person={"Opponent"} />
+                        </div>
 
+                        <Battle
+                            player1Pick={player1Pick}
+                            player2Pick={player2Pick}
+                            battle={battle}
+                            winner={battleWinner}
+                        />
+                        <div
+                            className='flex justify-center text-xl mt-4 mb-5 lg:w-full font-[MedievalSharp]'
+                            style={{ color: textColor }}
+                        >
+                            {dir}
+                        </div>
+                        {
+                            !battle && (
+                                <>
+                                    <button
+                                        onClick={handleButtonPress}
+                                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 
+                                    rounded focus:outline-none focus:shadow-outline w-[80px] font-[MedievalSharp]"
+                                    >
+                                        Enter
+                                    </button>
+
+                                    <div className='lg:mt-12'>
+                                        <Player
+                                            player="1"
+                                            look={true}
+                                            cards={cards}
+                                            handleCardSelect={handleCardSelect}
+                                        />
+                                    </div>
+                                </>
+                            )
+                        }
+
+                    </div>
+                )}
+            </div>
         </div>
-
     )
 }
 

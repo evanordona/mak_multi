@@ -5,9 +5,6 @@ const Player = ({ player, look, cards, handleCardSelect }) => {
 
     return (
         <div>
-            <div className='flex justify-center text-2xl lg:text-4xl py-4 text-white font-[MedievalSharp]'>
-                Hand:
-            </div>
 
             <Hand
                 player={player}

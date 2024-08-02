@@ -4,7 +4,7 @@ const Key = () => {
 
 
   return (
-    <div className='flex flex-col items-center justify-center text-white w-[130px] h-[115px] text-[12px] lg:text-lg'>
+    <div className='ml-0 lg:ml-10 flex flex-col items-center justify-center text-white w-[130px] h-[115px] text-[12px] lg:text-lg'>
       <div className='font-bold underline'>Key</div>
       <div>
         <h1 className='text-red-300'>Knight <span className='text-white'>&#8594;</span> <span className='text-green-300'>Archer</span></h1>

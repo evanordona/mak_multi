@@ -5,85 +5,62 @@ import Key from './Key'
 import ExampleWin from './ExampleWin'
 
 const Home = ({ setShowGame, setIsConnected, code, setCode, showKey, setShowKey }) => {
-
     const [host, setHost] = useState(false)
     const [join, setJoin] = useState(false)
 
-    const handleClick = () => {
-        setShowKey(!showKey)
-    }
-
-    const handleHost = () => {
-        setHost(true)
-
-    }
-
-    const handleJoin = () => {
-        setJoin(true)
-    }
+    const handleClick = () => setShowKey(!showKey)
+    const handleHost = () => setHost(true)
+    const handleJoin = () => setJoin(true)
 
     return (
-        <div className='flex flex-col items-center h-screen w-screen bg-gradient-to-b from-[#101010] to-[#4b4b4b]'>
-            {showKey ?
-
-                <div>
-                    <div className='absolute left-0'>
-                        <Key />
-
-                    </div>
-
-                    <div className='absolute right-0'>
-                        <ExampleWin />
-
-                    </div>
-
-
-                </div> :
-
-                <div></div>}
-            <div className='flex flex-col items-center justify-center w-screen h-screen'>
-
-                <h1 className='text-4xl lg:text-5xl font-[MedievalSharp] bg-clip-text text-transparent bg-gradient-to-r from-red-500  via-yellow-200 to-red-500 font-bold'>
-                    Lords Duel
+        <div className='relative w-full min-h-screen text-white body-background'>
+            <div className='stars'></div>
+            <div className='container relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-8 mx-auto'>
+                <h1 className='text-5xl lg:text-7xl font-[MedievalSharp] text-center mb-12 relative'>
+                    <span className='relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-300 to-red-500'>
+                        Lords Duel
+                    </span>
                 </h1>
 
-
-                {
-                    !host && !join ? (
-                        <div className='flex flex-col items-center justify-center'>
-
-
-                            <div className='mt-16 flex w-[300px] justify-evenly '>
-
-                                <button onClick={handleHost} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 
-                             rounded focus:outline-none focus:shadow-outline w-[100px] font-[MedievalSharp]'>Host</button>
-                                <button onClick={handleJoin} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 
-                             rounded focus:outline-none focus:shadow-outline w-[100px] font-[MedievalSharp]'>Join</button>
-
-                            </div>
-
-                            <div>
-                                <button onClick={handleClick} className='mt-10 px-2 py-2 font-bold text-white bg-green-500 hover:bg-green-700 rounded 
-                            focus:outline-none focus:shadow-outline w-[100px] font-[MedievalSharp] text-[14px]'>
-                                    {showKey ? "Hide Key" : "Show Key"}
+                {!host && !join ? (
+                    <div className='w-full max-w-md'>
+                        <div className='p-8 mb-8 bg-gray-800 bg-opacity-50 rounded-lg shadow-lg'>
+                            <div className='flex flex-col justify-center gap-4 mb-6 sm:flex-row'>
+                                <button onClick={handleHost} className='btn-primary'>
+                                    Host Game
+                                </button>
+                                <button onClick={handleJoin} className='btn-secondary'>
+                                    Join Game
                                 </button>
                             </div>
-
+                            <button onClick={handleClick} className='w-full btn-tertiary'>
+                                {showKey ? "Hide Key" : "Show Key"}
+                            </button>
                         </div>
-
-                    ) : (
-                        <div>
-                            {
-                                host ? <Host setShowGame={setShowGame} setIsConnected={setIsConnected} setCode={setCode} code={code} setHost={setHost} /> : <Join setShowGame={setShowGame} setIsConnected={setIsConnected} setCode={setCode} code={code} setJoin={setJoin} />
-                            }
-                        </div>
-                    )
-                }
-
-
-
+                    </div>
+                ) : (
+                    <div className='w-full max-w-md'>
+                        {host ? 
+                            <Host setShowGame={setShowGame} setIsConnected={setIsConnected} setCode={setCode} code={code} setHost={setHost} /> : 
+                            <Join setShowGame={setShowGame} setIsConnected={setIsConnected} setCode={setCode} code={code} setJoin={setJoin} />
+                        }
+                    </div>
+                )}
             </div>
 
+            {showKey && (
+                <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
+                    <div className='w-full max-w-2xl p-6 mx-4 bg-gray-800 rounded-lg shadow-xl'>
+                        <h2 className='text-2xl font-[MedievalSharp] mb-4'>Game Key</h2>
+                        <Key />
+                        <h2 className='text-2xl font-[MedievalSharp] mt-8 mb-4'>Example Win</h2>
+                        <ExampleWin />
+                        <button onClick={handleClick} className='w-full mt-6 btn-tertiary'>
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
