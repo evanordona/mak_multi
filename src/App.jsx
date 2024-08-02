@@ -18,12 +18,8 @@ function App() {
     <>
       <Routes>
 
-        <Route exact path='/' element={!isConnected ? <Home setIsConnected={setIsConnected} code={code} setCode={setCode} showKey={showKey} setShowKey={setShowKey} setShowGame={setShowGame} /> : <Navigate to='/game' />} />
+        <Route exact path='/' element={!isConnected ? <Home setIsConnected={setIsConnected} code={code} setCode={setCode} showKey={showKey} setShowKey={setShowKey} setShowGame={setShowGame} /> : <Game isConnected={isConnected} setIsConnected={setIsConnected} setCode={setCode} code={code} showKey={showKey} showGame={showGame} setShowGame={setShowGame} />} />
 
-        <Route exact path='/game'
-          element={isConnected ?
-            <Game isConnected={isConnected} setIsConnected={setIsConnected} setCode={setCode} code={code} showKey={showKey} showGame={showGame} setShowGame={setShowGame} /> :
-            <Navigate to='/' />} />
 
       </Routes>
     </>
