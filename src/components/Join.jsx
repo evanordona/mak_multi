@@ -5,7 +5,7 @@ const Join = ({ setIsConnected, code, setCode, setShowGame, setJoin }) => {
 
     // Join user to room
     const joinRoom = () => {
-        socket.emit("joinRoom", code)
+        socket.emit("joinRoom", code.toLowerCase())
     }
 
     const goBack = () => {
