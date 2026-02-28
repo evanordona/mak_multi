@@ -20,7 +20,6 @@ function App() {
 
         <Route exact path='/' element={!isConnected ? <Home setIsConnected={setIsConnected} code={code} setCode={setCode} showKey={showKey} setShowKey={setShowKey} setShowGame={setShowGame} /> : <Game isConnected={isConnected} setIsConnected={setIsConnected} setCode={setCode} code={code} showKey={showKey} showGame={showGame} setShowGame={setShowGame} />} />
 
-
       </Routes>
     </>
   )

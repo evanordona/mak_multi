@@ -14,7 +14,7 @@ app.use(cors())
 // http://localhost:5173
 const io = new Server(server, {
     cors: {
-        origin: 'https://www.lordsduel.com',
+        origin: 'https://mak-game.onrender.com',
         methods: ['GET', 'POST'],
     }
 })
